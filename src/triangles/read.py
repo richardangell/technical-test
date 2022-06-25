@@ -49,9 +49,20 @@ class Reader:
 
         self._check_read_file(incremental_data)
 
-        incremental_data_split = self._split_incremental_data(incremental_data)
+        incremental_data_sorted = self._sort_incremental_data(incremental_data)
+        incremental_data_split = self._split_incremental_data(incremental_data_sorted)
 
         return incremental_data_split
+
+    def _sort_incremental_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Method to sort incremental data by origin year and then development
+        year, in ascending order.
+        """
+
+        return df.sort_values(
+            by=[self.INCREMENTAL_DATA_COLUMNS[1], self.INCREMENTAL_DATA_COLUMNS[2]],
+            ascending=True,
+        )
 
     def _check_read_file(self, df: pd.DataFrame):
         """Method to do checks on incemental data"""
