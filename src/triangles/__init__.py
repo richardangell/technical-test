@@ -4,3 +4,4 @@ from ._version import __version__
 from . import accumulate
 from . import checks
 from . import read
+from . import write

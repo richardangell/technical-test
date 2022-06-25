@@ -1,3 +1,5 @@
+"""Module dealing with accumulating incremental payment values."""
+
 import pandas as pd
 
 from typing import Union
@@ -39,7 +41,7 @@ class Accumulator:
 
         development_years_info = {
             "min_origin_year": self.min_origin_year,
-            "n_development_year": self._get_n_development_years(),
+            "n_development_years": self._get_n_development_years(),
         }
 
         return development_years_info
