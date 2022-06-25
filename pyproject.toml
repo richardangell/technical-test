@@ -1,0 +1,25 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "triangles"
+author = "Richard Angell"
+author-email = "richardangell37@gmail.com"
+home-page = "https://github.com/richardangell/technical-test"
+requires=[
+    "pandas==1.4.3"
+]
+requires-python=">=3.10"
+description-file="README.md"
+classifiers=[
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.flit.metadata.requires-extra]
+test = [
+    "pre-commit==2.19.0",
+    "pytest==7.1.2"
+]
