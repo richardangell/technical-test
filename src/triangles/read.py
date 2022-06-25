@@ -50,17 +50,16 @@ class Reader:
         self._check_read_file(incremental_data)
 
         incremental_data_sorted = self._sort_incremental_data(incremental_data)
-        incremental_data_split = self._split_incremental_data(incremental_data_sorted)
 
-        return incremental_data_split
+        return incremental_data_sorted
 
     def _sort_incremental_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Method to sort incremental data by origin year and then development
-        year, in ascending order.
+        """Method to sort incremental data by product, origin year and then
+        development year, in ascending order.
         """
 
         return df.sort_values(
-            by=[self.INCREMENTAL_DATA_COLUMNS[1], self.INCREMENTAL_DATA_COLUMNS[2]],
+            by=self.INCREMENTAL_DATA_COLUMNS[:3],
             ascending=True,
         )
 
@@ -85,14 +84,3 @@ class Reader:
             is_numeric_dtype(df[self.INCREMENTAL_DATA_COLUMNS[3]]),
             f"{self.INCREMENTAL_DATA_COLUMNS[3]} column is numeric type",
         )
-
-    def _split_incremental_data(self, df: pd.DataFrame) -> dict[str, pd.DataFrame]:
-        """Method to split incremental data by product."""
-
-        products = df["Product"].unique().tolist()
-
-        df_split = {
-            product: df.loc[df["Product"] == product].copy() for product in products
-        }
-
-        return df_split
