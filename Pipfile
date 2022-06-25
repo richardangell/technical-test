@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pandas = "==1.4.3"
+triangles = {path = "."}
 
 [dev-packages]
 pytest = "==7.1.2"
