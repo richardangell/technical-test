@@ -48,7 +48,7 @@ class Accumulator:
 
     def _get_n_development_years(self) -> int:
 
-        return self.max_origin_year - self.min_origin_year
+        return self.max_origin_year - self.min_origin_year + 1
 
     def _accumulate_products(self) -> dict[str, list[Union[int, float]]]:
         """Accumulate incremental values for all products."""
