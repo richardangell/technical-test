@@ -11,7 +11,7 @@ from .checks import check_condition, check_type
 
 class Reader:
     """Class to read comma separated text file containing .
-    
+
     Parameters
     ----------
     filename: str
@@ -19,10 +19,15 @@ class Reader:
 
     """
 
-    INCREMENTAL_DATA_COLUMNS = ['Product', 'Origin Year', 'Development Year', 'Incremental Value']
+    INCREMENTAL_DATA_COLUMNS = [
+        "Product",
+        "Origin Year",
+        "Development Year",
+        "Incremental Value",
+    ]
 
     def __init__(self, filename: str) -> None:
-        
+
         check_type(filename, str, "filename")
 
         file = Path(filename)
@@ -34,11 +39,13 @@ class Reader:
 
         self.filename = filename
 
-    def read(self) -> dict[str: pd.DataFrame]:
+    def read(self) -> dict[str, pd.DataFrame]:
         """Read text file and return a dictionary of DataFrames where each
         DataFrame is the input data subset to a specific product."""
 
-        incremental_data = pd.read_csv(self.filename, usecols=self.INCREMENTAL_DATA_COLUMNS)
+        incremental_data = pd.read_csv(
+            self.filename, usecols=self.INCREMENTAL_DATA_COLUMNS
+        )
 
         self._check_read_file(incremental_data)
 
@@ -51,16 +58,30 @@ class Reader:
 
         check_condition(df.shape[0] > 0, "incremental data has rows")
 
-        check_condition(is_object_dtype(df[self.INCREMENTAL_DATA_COLUMNS[0]]), f"{self.INCREMENTAL_DATA_COLUMNS[0]} column is object type")
-        check_condition(is_integer_dtype(df[self.INCREMENTAL_DATA_COLUMNS[1]]), f"{self.INCREMENTAL_DATA_COLUMNS[1]} column is integer type")
-        check_condition(is_integer_dtype(df[self.INCREMENTAL_DATA_COLUMNS[2]]), f"{self.INCREMENTAL_DATA_COLUMNS[2]} column is integer type")
-        check_condition(is_numeric_dtype(df[self.INCREMENTAL_DATA_COLUMNS[3]]), f"{self.INCREMENTAL_DATA_COLUMNS[3]} column is numeric type")
+        check_condition(
+            is_object_dtype(df[self.INCREMENTAL_DATA_COLUMNS[0]]),
+            f"{self.INCREMENTAL_DATA_COLUMNS[0]} column is object type",
+        )
+        check_condition(
+            is_integer_dtype(df[self.INCREMENTAL_DATA_COLUMNS[1]]),
+            f"{self.INCREMENTAL_DATA_COLUMNS[1]} column is integer type",
+        )
+        check_condition(
+            is_integer_dtype(df[self.INCREMENTAL_DATA_COLUMNS[2]]),
+            f"{self.INCREMENTAL_DATA_COLUMNS[2]} column is integer type",
+        )
+        check_condition(
+            is_numeric_dtype(df[self.INCREMENTAL_DATA_COLUMNS[3]]),
+            f"{self.INCREMENTAL_DATA_COLUMNS[3]} column is numeric type",
+        )
 
-    def _split_incremental_data(self, df: pd.DataFrame) -> dict[str: pd.DataFrame]:
+    def _split_incremental_data(self, df: pd.DataFrame) -> dict[str, pd.DataFrame]:
         """Method to split incremental data by product."""
 
         products = df["Product"].unique().tolist()
 
-        df_split = {product: df.loc[df["Product"] == product].copy() for product in products}
+        df_split = {
+            product: df.loc[df["Product"] == product].copy() for product in products
+        }
 
         return df_split

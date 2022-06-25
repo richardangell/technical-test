@@ -61,4 +61,4 @@ def check_condition(condition: bool, error_message_text: str):
 
     if not condition:
 
-        raise ValueError(f"condition: [{error_message_text}] not met")            
+        raise ValueError(f"condition: [{error_message_text}] not met")
