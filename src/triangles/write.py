@@ -17,7 +17,7 @@ class Writer:
 
         check_condition(len(file_extension) == 1, "filename has one extension")
         check_condition(file_extension[0] == ".txt", "filename has .txt extension")
-        check_condition(not file.exists(), f"{filename} already exists")
+        check_condition(not file.exists(), f"{filename} does not already exist")
 
         self.filename = filename
 
