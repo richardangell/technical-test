@@ -1,10 +1,46 @@
 """Module dealing with accumulating incremental payment values."""
 
 import pandas as pd
+from dataclasses import dataclass
 
 from typing import Union
 
 from .checks import check_type
+
+
+@dataclass
+class AccumulatedData:
+
+    min_origin_year: int
+    n_development_years: int
+    accumulated_data: dict[str, list[Union[int, float]]]
+
+    def process_accumulated_data_to_output_format(self) -> list[str]:
+
+        processed_list = [self._create_first_output_row()]
+
+        for product, product_accumulated_list in self.accumulated_data.items():
+
+            processed_list.append(
+                self._convert_accumulated_list_to_str(product, product_accumulated_list)
+            )
+
+        return processed_list
+
+    def _create_first_output_row(self) -> str:
+
+        return f"""{self.min_origin_year},{self.n_development_years}"""
+
+    def _convert_accumulated_list_to_str(
+        self, product: str, accumulated_list: list[Union[int, float]]
+    ) -> str:
+        """Convert accumulated payment values to strings and concatenate with
+        comma as separater into one string.
+        """
+
+        numeric_values_concatenated = ",".join(str(value) for value in accumulated_list)
+
+        return f"{product},{numeric_values_concatenated}"
 
 
 class Accumulator:
@@ -27,24 +63,15 @@ class Accumulator:
                 f"expecting max origin and development years to be equal but got; {self.max_origin_year} and {self.max_development_year}"
             )
 
-    def accumulate(self) -> dict[str, Union[int, list[Union[int, float]]]]:
+    def accumulate(self) -> AccumulatedData:
         """Accumulate incremental payment values and return all info to be
         written in the output file."""
 
-        development_years_info = self._get_development_years_info()
-
-        accumulated_product_data = self._accumulate_products()
-
-        return development_years_info | accumulated_product_data
-
-    def _get_development_years_info(self) -> dict[str, int]:
-
-        development_years_info = {
-            "min_origin_year": self.min_origin_year,
-            "n_development_years": self._get_n_development_years(),
-        }
-
-        return development_years_info
+        return AccumulatedData(
+            min_origin_year=self.min_origin_year,
+            n_development_years=self._get_n_development_years(),
+            accumulated_data=self._accumulate_products(),
+        )
 
     def _get_n_development_years(self) -> int:
 
