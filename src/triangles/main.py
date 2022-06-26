@@ -10,6 +10,21 @@ from .write import Writer
 
 
 class TriangleAccumulator:
+    """Class to read an input file, process it (i.e. accumulate the
+    incremental payment data) and write the results to an output file.
+
+    Parameters
+    ----------
+    input : str
+        Filename including path and extenion of input file to process. Must be
+        a text file.
+
+    input : str
+        Filename including path and extenion of file to save results to. Must be
+        a text file.
+
+    """
+
     def __init__(self, input: str, output: str) -> None:
 
         self.reader = Reader(input)
@@ -18,6 +33,7 @@ class TriangleAccumulator:
         self.output = output
 
     def process(self):
+        """Method to read the input file, process and then write the results."""
 
         incremental_data = self.reader.read()
 
@@ -28,6 +44,20 @@ class TriangleAccumulator:
 
 
 def accumulate_incremental_data(input: str, output: str):
+    """Helper function to read an input file, process it (i.e. accumulate the
+    incremental payment data) and write the results to an output file.
+
+    Parameters
+    ----------
+    input : str
+        Filename including path and extenion of input file to process. Must be
+        a text file.
+
+    input : str
+        Filename including path and extenion of file to save results to. Must be
+        a text file.
+
+    """
 
     traingale_accumulator = TriangleAccumulator(input, output)
 
@@ -35,6 +65,18 @@ def accumulate_incremental_data(input: str, output: str):
 
 
 def main(argv=sys.argv):
+    """Command line entry point for the accumulate_incremental_data function.
+
+    Command line options are input and output which should both be strings
+    giving the input file to process and the output file to write to. Both the
+    argumnets are positional arguments.
+
+    Parameters
+    ----------
+    argv : sys.argv
+        Command line arguments.
+
+    """
 
     parser = argparse.ArgumentParser(description="Accumulate reserving payment data.")
 

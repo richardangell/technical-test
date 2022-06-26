@@ -10,12 +10,24 @@ from .checks import check_condition, check_type
 
 
 class Reader:
-    """Class to read comma separated text file containing .
+    """Class to read comma separated text file containing incremental payment
+    data.
 
     Parameters
     ----------
     filename: str
         Filename including path and extension of text file to read.
+
+    Raises
+    ------
+    TypeError
+        If filename is not a str.
+
+    ValueError
+        If filename does not have one (.txt) extension.
+
+    ValueError
+        If filename does not exist.
 
     """
 
@@ -39,9 +51,17 @@ class Reader:
 
         self.filename = filename
 
-    def read(self) -> dict[str, pd.DataFrame]:
+    def read(self) -> pd.DataFrame:
         """Read text file and return a dictionary of DataFrames where each
-        DataFrame is the input data subset to a specific product."""
+        DataFrame is the input data subset to a specific product.
+
+        Returns
+        -------
+        pd.DataFrame
+            Incremental payment data across all products. Data is sorted by
+            product, origin year and development year before returning.
+
+        """
 
         incremental_data = pd.read_csv(
             self.filename, usecols=self.INCREMENTAL_DATA_COLUMNS
@@ -56,6 +76,17 @@ class Reader:
     def _sort_incremental_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """Method to sort incremental data by product, origin year and then
         development year, in ascending order.
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            Incremental data to sort.
+
+        Returns
+        -------
+        pd.DataFrame
+            Sorted incremental data.
+
         """
 
         return df.sort_values(
@@ -63,8 +94,32 @@ class Reader:
             ascending=True,
         )
 
-    def _check_read_file(self, df: pd.DataFrame):
-        """Method to do checks on incemental data"""
+    def _check_read_file(self, df: pd.DataFrame) -> None:
+        """Method to do checks on incemental data.
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            Incremental payment data.
+
+        Raises
+        ------
+        ValueError
+            If df has not rows.
+
+        ValueError
+            If product column in df is not object dtype.
+
+        ValueError
+            If origin year column in df is not integer dtype.
+
+        ValueError
+            If development year column in df is not integer dtype.
+
+        ValueError
+            If incremental value column in df is not numeric dtype.
+
+        """
 
         check_condition(df.shape[0] > 0, "incremental data has rows")
 
