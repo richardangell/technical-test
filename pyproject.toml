@@ -24,3 +24,6 @@ test = [
 
 [project.urls]
 Home = "https://github.com/richardangell/technical-test"
+
+[project.scripts]
+triangles = "triangles.main:main"
