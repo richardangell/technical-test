@@ -114,12 +114,10 @@ class Accumulator:
 
     """
 
-    def __init__(self, product: str, incremental_data: pd.DataFrame) -> None:
+    def __init__(self, incremental_data: pd.DataFrame) -> None:
 
-        check_type(product, str, "product")
         check_type(incremental_data, pd.DataFrame, "incremental_data")
 
-        self.product = product
         self.incremental_data = incremental_data
         self.min_origin_year = incremental_data["Origin Year"].min()
         self.max_origin_year = incremental_data["Origin Year"].max()

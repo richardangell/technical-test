@@ -37,7 +37,7 @@ class TriangleAccumulator:
 
         incremental_data = self.reader.read()
 
-        self.accumulator = Accumulator("na", incremental_data)
+        self.accumulator = Accumulator(incremental_data)
         accumulated_data = self.accumulator.accumulate()
 
         self.writer.write(accumulated_data)
