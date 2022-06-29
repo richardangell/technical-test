@@ -60,3 +60,11 @@ class Writer:
         with open(self.filename, "w") as f:
             for row in processed_accumulated_data:
                 f.write(row + "\n")
+
+    def __eq__(self, other: object) -> bool:
+        """Equality check method for Reader class."""
+
+        if not isinstance(other, Writer):
+            raise TypeError(f"cannot compare objects of types Writer and {type(other)}")
+
+        return self.filename == other.filename

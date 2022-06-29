@@ -139,3 +139,13 @@ class Reader:
             is_numeric_dtype(df[self.INCREMENTAL_DATA_COLUMNS[3]]),
             f"{self.INCREMENTAL_DATA_COLUMNS[3]} column is numeric type",
         )
+
+    def __eq__(self, other: object) -> bool:
+        """Equality check method for Reader class."""
+
+        if not isinstance(other, Reader):
+            raise TypeError(f"cannot compare objects of types Reader and {type(other)}")
+
+        return (self.filename == other.filename) and (
+            self.INCREMENTAL_DATA_COLUMNS == other.INCREMENTAL_DATA_COLUMNS
+        )

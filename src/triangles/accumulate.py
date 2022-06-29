@@ -120,14 +120,7 @@ class Accumulator:
 
         self.incremental_data = incremental_data
         self.min_origin_year = incremental_data["Origin Year"].min()
-        self.max_origin_year = incremental_data["Origin Year"].max()
-        self.min_development_year = incremental_data["Development Year"].min()
         self.max_development_year = incremental_data["Development Year"].max()
-
-        if self.max_origin_year != self.max_development_year:
-            raise ValueError(
-                f"expecting max origin and development years to be equal but got; {self.max_origin_year} and {self.max_development_year}"
-            )
 
     def accumulate(self) -> AccumulatedData:
         """Accumulate incremental payment values and return all info required
@@ -149,7 +142,7 @@ class Accumulator:
     def _get_n_development_years(self) -> int:
         """Calculate the maximum number of development years in the data."""
 
-        return self.max_origin_year - self.min_origin_year + 1
+        return self.max_development_year - self.min_origin_year + 1
 
     def _accumulate_products(self) -> dict[str, list[Union[int, float]]]:
         """Accumulate incremental values for all products.
@@ -202,11 +195,11 @@ class Accumulator:
 
         accumulated_values_list: list[Union[int, float]] = []
 
-        for origin_year in range(self.min_origin_year, self.max_origin_year + 1):
+        for origin_year in range(self.min_origin_year, self.max_development_year + 1):
 
             accumulated_value = 0.0
 
-            for development_year in range(origin_year, self.max_origin_year + 1):
+            for development_year in range(origin_year, self.max_development_year + 1):
 
                 incremental_value = product_incremental_data.loc[
                     (product_incremental_data["Origin Year"] == origin_year)
@@ -216,7 +209,7 @@ class Accumulator:
                     "Incremental Value",
                 ].sum()
 
-                accumulated_value += incremental_value
+                accumulated_value = round(accumulated_value + incremental_value, 2)
 
                 accumulated_values_list.append(accumulated_value)
 
