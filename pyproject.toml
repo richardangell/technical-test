@@ -20,7 +20,8 @@ dependencies=[
 test = [
     "pre-commit==2.19.0",
     "pytest==7.1.2",
-    "pytest-mock==3.8.1" 
+    "pytest-mock==3.8.1",
+    "pytest-cov==3.0.0"
 ]
 
 [project.urls]
